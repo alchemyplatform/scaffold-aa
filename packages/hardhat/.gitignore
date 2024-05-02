@@ -20,8 +20,5 @@ artifacts
 artifacts-zk
 cache-zk
 
-# deployments
-deployments
-
 # other
 temp
