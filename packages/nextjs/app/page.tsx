@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useAccount } from "@alchemy/aa-alchemy/react";
 import type { NextPage } from "next";
 import { BookOpenIcon, BugAntIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
+import { useSmartAccount } from "~~/hooks/useSmartAccount";
 
 declare global {
   interface HTMLDialogElement extends HTMLElement {
@@ -13,7 +13,7 @@ declare global {
 }
 
 const Home: NextPage = () => {
-  const { account } = useAccount({ type: "MultiOwnerModularAccount" });
+  const { account } = useSmartAccount();
 
   return (
     <>

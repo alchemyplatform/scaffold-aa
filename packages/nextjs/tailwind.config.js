@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+import { withAccountKitUi } from "@account-kit/react/tailwind";
+
+module.exports = withAccountKitUi({
   content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}", "./utils/**/*.{js,ts,jsx,tsx}"],
   plugins: [require("daisyui")],
   darkTheme: "dark",
@@ -84,4 +86,4 @@ module.exports = {
       },
     },
   },
-};
+});

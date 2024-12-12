@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { ADDRESS_QR_MODAL_ID } from "./AddressQRCodeModal";
-import { useLogout } from "@alchemy/aa-alchemy/react";
+import { useLogout } from "@account-kit/react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { getAddress } from "viem";
 import { Address } from "viem";

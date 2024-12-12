@@ -1,4 +1,4 @@
-import { SmartAccountClient } from "@alchemy/aa-core";
+import { useSmartAccount } from "../useSmartAccount";
 import { Hash, SendTransactionParameters } from "viem";
 import { getBlockExplorerTxLink, getParsedError, notification } from "~~/utils/scaffold-eth";
 import { TransactorFuncOptions } from "~~/utils/scaffold-eth/contract";
@@ -29,7 +29,9 @@ const TxnNotification = ({ message, blockExplorerLink }: { message: string; bloc
  * @param _walletClient - Optional wallet client to use. If not provided, will use the one from useWalletClient.
  * @returns function that takes in transaction function as callback, shows UI feedback for transaction and returns a promise of the transaction hash
  */
-export const useTransactor = ({ client }: { client?: SmartAccountClient }): TransactionFunc => {
+export const useTransactor = (): TransactionFunc => {
+  const { client } = useSmartAccount();
+
   const result: TransactionFunc = async (tx, options) => {
     if (!client) {
       notification.error("Cannot access account");
@@ -84,6 +86,5 @@ export const useTransactor = ({ client }: { client?: SmartAccountClient }): Tran
 
     return transactionHash;
   };
-
   return result;
 };

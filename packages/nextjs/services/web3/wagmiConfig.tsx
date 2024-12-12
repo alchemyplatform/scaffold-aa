@@ -2,6 +2,7 @@ import { Chain, createClient, http } from "viem";
 import { mainnet } from "viem/chains";
 import { createConfig } from "wagmi";
 import scaffoldConfig from "~~/scaffold.config";
+import { getAlchemyHttpUrl } from "~~/utils/scaffold-eth/networks";
 
 const { targetNetworks } = scaffoldConfig;
 
@@ -16,7 +17,7 @@ export const wagmiConfig = createConfig({
   client({ chain }) {
     return createClient({
       chain,
-      transport: http("/api/rpc/chain/" + chain.id),
+      transport: http(getAlchemyHttpUrl(chain.id)),
       pollingInterval: scaffoldConfig.pollingInterval,
     });
   },

@@ -14,11 +14,10 @@
     "vercel:yolo": "vercel --build-env NEXT_PUBLIC_IGNORE_BUILD_ERROR=true"
   },
   "dependencies": {
-    "@alchemy/aa-accounts": "^3.11.0",
-    "@alchemy/aa-alchemy": "^3.11.0",
-    "@alchemy/aa-core": "^3.11.0",
+    "@account-kit/infra": "^4.6.1",
+    "@account-kit/react": "^4.6.1",
     "@heroicons/react": "^2.0.11",
-    "@tanstack/react-query": "5.28.9",
+    "@tanstack/react-query": "^5.62.7",
     "@uniswap/sdk-core": "^4.0.1",
     "@uniswap/v2-sdk": "^3.0.1",
     "blo": "^1.0.1",

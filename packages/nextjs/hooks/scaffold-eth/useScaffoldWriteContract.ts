@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useSendUserOperation, useSmartAccountClient } from "@alchemy/aa-alchemy/react";
+import { useSmartAccount } from "../useSmartAccount";
+import { useSendUserOperation } from "@account-kit/react";
 import { Abi, ExtractAbiFunctionNames } from "abitype";
 import { Hex, encodeFunctionData } from "viem";
 import { useDeployedContractInfo, useTransactor } from "~~/hooks/scaffold-eth";
@@ -23,18 +24,10 @@ export const useScaffoldWriteContract = <TContractName extends ContractName>(con
     throw new Error("gas policy not set!");
   }
 
-  const { client } = useSmartAccountClient({
-    type: "MultiOwnerModularAccount",
-    gasManagerConfig: {
-      policyId,
-    },
-    opts: {
-      txMaxRetries: 20,
-    },
-  });
+  const { client } = useSmartAccount();
   const { sendUserOperationAsync, sendUserOperation } = useSendUserOperation({ client });
 
-  const writeTx = useTransactor({ client });
+  const writeTx = useTransactor();
   const [isMining, setIsMining] = useState(false);
 
   const { data: deployedContractData } = useDeployedContractInfo(contractName);

@@ -1,9 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { cookieStorage, createConfig } from "@alchemy/aa-alchemy/config";
-import { AlchemyAccountProvider } from "@alchemy/aa-alchemy/react";
-import { arbitrumSepolia } from "@alchemy/aa-core";
+import { alchemy, arbitrumSepolia } from "@account-kit/infra";
+import { AlchemyAccountProvider, cookieStorage, createConfig } from "@account-kit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
@@ -11,6 +10,7 @@ import { Footer } from "~~/components/Footer";
 import { Header } from "~~/components/header/Header";
 import { ProgressBar } from "~~/components/scaffold-eth/ProgressBar";
 import { useNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
+import { SmartAccountProvider } from "~~/hooks/useSmartAccount";
 import { useGlobalState } from "~~/services/store/store";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
@@ -44,15 +44,21 @@ export const queryClient = new QueryClient({
   },
 });
 
-const alchemyAccountConfig = createConfig({
-  rpcUrl: "/api/rpc/chain/" + arbitrumSepolia.id,
-  signerConnection: {
-    rpcUrl: "/api/rpc/",
+export const alchemyAccountConfig = createConfig(
+  {
+    transport: alchemy({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY ?? "" }),
+    policyId: process.env.NEXT_PUBLIC_ALCHEMY_GAS_MANAGER_POLICY_ID ?? "",
+    chain: arbitrumSepolia,
+    ssr: true,
+    storage: cookieStorage,
+    enablePopupOauth: true,
   },
-  ssr: true,
-  chain: arbitrumSepolia,
-  storage: cookieStorage,
-});
+  {
+    auth: {
+      sections: [[{ type: "email" }], [{ type: "social", authProviderId: "google", mode: "popup" }]],
+    },
+  },
+);
 
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -60,7 +66,9 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
       <QueryClientProvider client={queryClient}>
         <ProgressBar />
         <AlchemyAccountProvider config={alchemyAccountConfig} queryClient={queryClient}>
-          <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          <SmartAccountProvider>
+            <ScaffoldEthApp>{children}</ScaffoldEthApp>
+          </SmartAccountProvider>
         </AlchemyAccountProvider>
       </QueryClientProvider>
     </WagmiProvider>

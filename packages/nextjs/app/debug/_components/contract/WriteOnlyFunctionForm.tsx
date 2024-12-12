@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { InheritanceTooltip } from "./InheritanceTooltip";
-import { useSendUserOperation, useSmartAccountClient } from "@alchemy/aa-alchemy/react";
+import { useSendUserOperation } from "@account-kit/react";
 import { Abi, AbiFunction } from "abitype";
 import { Address, Hex, TransactionReceipt, encodeFunctionData } from "viem";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
@@ -16,6 +16,7 @@ import {
 } from "~~/app/debug/_components/contract";
 import { IntegerInput } from "~~/components/scaffold-eth";
 import { useTransactor } from "~~/hooks/scaffold-eth";
+import { useSmartAccount } from "~~/hooks/useSmartAccount";
 
 type WriteOnlyFunctionFormProps = {
   abi: Abi;
@@ -38,21 +39,13 @@ export const WriteOnlyFunctionForm = ({
     throw new Error("gas policy not set!");
   }
 
-  const { client } = useSmartAccountClient({
-    type: "MultiOwnerModularAccount",
-    gasManagerConfig: {
-      policyId,
-    },
-    opts: {
-      txMaxRetries: 20,
-    },
-  });
+  const { client } = useSmartAccount();
   const { sendUserOperationAsync, isSendingUserOperation } = useSendUserOperation({
     client,
   });
   const [form, setForm] = useState<Record<string, any>>(() => getInitialFormState(abiFunction));
   const [txValue, setTxValue] = useState<string | bigint>("");
-  const writeTxn = useTransactor({ client });
+  const writeTxn = useTransactor();
   const writeDisabled = !client?.account;
 
   const { data: result } = useWriteContract();
