@@ -1,3 +1,7 @@
+# ⚠️ This Repository is Archived  
+This project is no longer maintained. Please visit [Scaffold-Alchemy](https://github.com/alchemyplatform/scaffold-alchemy) for the latest updates.
+
+
 # 🏗 Scaffold-AA
 
 <h4 align="center">
